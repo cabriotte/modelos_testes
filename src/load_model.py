@@ -89,7 +89,13 @@ def main(args):
     })
     tabela_resultados["Diferenca_%"] = ((tabela_resultados["Preco_Real"] - tabela_resultados["Preco_Previsto"])
                                         / tabela_resultados["Preco_Real"]) * 100
+    # arredonda internamente
     tabela_resultados = tabela_resultados.round(3)
+    
+    # formata para exibição com 3 casas decimais
+    tabela_resultados["Preco_Previsto"] = tabela_resultados["Preco_Previsto"].map(lambda x: f"{x:.3f}")
+    tabela_resultados["Preco_Real"] = tabela_resultados["Preco_Real"].map(lambda x: f"{x:.3f}")
+    tabela_resultados["Diferenca_%"] = tabela_resultados["Diferenca_%"].map(lambda x: f"{x:.3f}")
 
     fig, ax = plt.subplots(figsize=(12,6))
     ax.axis('off')

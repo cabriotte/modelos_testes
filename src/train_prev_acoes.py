@@ -57,7 +57,7 @@ def main(args):
     modelo.compile(optimizer='adam', loss='mean_squared_error')
 
     # 6. Treinamento
-    early_stop = EarlyStopping(monitor='val_loss', patience=4, restore_best_weights=True)
+    early_stop = EarlyStopping(monitor='val_loss', patience=args.patience, restore_best_weights=True)
     modelo.fit(X_train, y_train,
                epochs=epocas,
                batch_size=batchsize,
@@ -77,6 +77,7 @@ if __name__ == "__main__":
     parser.add_argument("--janela", type=int, default=90, help="Tamanho da janela de dias")
     parser.add_argument("--epochs", type=int, default=40, help="Número de épocas")
     parser.add_argument("--batch", type=int, default=32, help="Tamanho do batch")
+    parser.add_argument("--patience", type=int, default=4, help="Número de épocas sem melhora antes de parar o treino")
     args = parser.parse_args()
 
     main(args)
