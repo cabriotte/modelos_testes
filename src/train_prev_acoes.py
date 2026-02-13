@@ -64,10 +64,27 @@ def main(args):
                validation_data=(X_test, y_test),
                callbacks=[early_stop])
 
-    # 7. Salvar modelo
+    # 7. Avaliação do modelo
+    y_pred = modelo.predict(X_test)
+    
+    # Reverter normalização para calcular métricas em valores reais
+    y_test_real = scaler.inverse_transform(y_test.reshape(-1, 1))
+    y_pred_real = scaler.inverse_transform(y_pred)
+    
+    # Calcular métricas
+    mae = mean_absolute_error(y_test_real, y_pred_real)
+    rmse = np.sqrt(mean_squared_error(y_test_real, y_pred_real))
+    mape = np.mean(np.abs((y_test_real - y_pred_real) / y_test_real)) * 100
+    
+    print(f"\n=== Métricas de Avaliação ===")
+    print(f"MAE (Mean Absolute Error): {mae:.2f}")
+    print(f"RMSE (Root Mean Squared Error): {rmse:.2f}")
+    print(f"MAPE (Mean Absolute Percentage Error): {mape:.2f}%")
+    
+    # 8. Salvar modelo
     os.makedirs("models", exist_ok=True)
     modelo.save(f"models/modelo_{ticker}.keras")
-    print(f"Modelo salvo em models/modelo_{ticker}.keras")
+    print(f"\nModelo salvo em models/modelo_{ticker}.keras")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Treinar modelo LSTM para previsão de preços")

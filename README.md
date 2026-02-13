@@ -116,6 +116,128 @@ Exemplo:
 ---
 
 ## 🚀 Como usar
-1. Treinar modelo:
+1. **Treinar modelo**:
    ```bash
-   python src/train_model.py --ticker ITUB4.SA --start 2024-01-01 --end 2025-12-31 --janela 90 --epochs 40 --batch 32
+   python src/train_prev_acoes.py --ticker ITUB4.SA --start 2024-01-01 --end 2025-12-31 --janela 90 --epochs 40 --batch 32
+   ```
+
+2. **Fazer previsões**:
+   ```bash
+   python src/predict_prev_acoes.py
+   ```
+
+3. **Executar API**:
+   ```bash
+   # Localmente
+   uvicorn api.main:app --reload
+   
+   # Com Docker
+   docker-compose up -d
+   ```
+
+4. **Acessar documentação da API**:
+   - Swagger UI: http://localhost:8000/docs
+   - ReDoc: http://localhost:8000/redoc
+
+---
+
+## 🌐 Usando a API
+
+### Exemplos com curl
+
+**Health Check**
+```bash
+curl http://localhost:8000/health
+```
+
+**Listar modelos disponíveis**
+```bash
+curl http://localhost:8000/models
+```
+
+**Obter previsões**
+```bash
+curl http://localhost:8000/predict/ITUB4.SA?janela=90
+```
+
+**Treinar novo modelo**
+```bash
+curl -X POST http://localhost:8000/train_model \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ticker": "AAPL",
+    "start": "2024-01-01",
+    "end": "2025-12-31",
+    "janela": 90,
+    "epochs": 40,
+    "batch": 32,
+    "patience": 4
+  }'
+```
+
+### Exemplo com Python
+
+```python
+import requests
+
+# Fazer previsão
+response = requests.get("http://localhost:8000/predict/ITUB4.SA?janela=90")
+print(response.json())
+
+# Treinar modelo
+data = {
+    "ticker": "PETR4.SA",
+    "start": "2024-01-01",
+    "end": "2025-12-31",
+    "janela": 90,
+    "epochs": 40,
+    "batch": 32,
+    "patience": 4
+}
+response = requests.post("http://localhost:8000/train_model", json=data)
+print(response.json())
+```
+
+---
+
+## 📚 Documentação Adicional
+
+- **[AVALIACAO.md](AVALIACAO.md)** - Avaliação completa do projeto (Nota: 84/90)
+- **[DEPLOY.md](DEPLOY.md)** - Guia completo de deploy (Local, AWS, GCP, Azure)
+
+---
+
+## 🐳 Deploy com Docker
+
+```bash
+# Build e executar
+docker-compose up -d --build
+
+# Ver logs
+docker-compose logs -f
+
+# Parar
+docker-compose down
+```
+
+---
+
+## 📊 Estrutura do Projeto
+
+```
+modelos_testes/
+├── api/                    # API FastAPI
+│   ├── main.py            # Endpoints da API
+│   └── schemas/           # Schemas Pydantic
+├── src/                   # Scripts de treinamento e previsão
+│   ├── train_prev_acoes.py
+│   └── predict_prev_acoes.py
+├── models/                # Modelos treinados (.keras)
+├── videos/                # Vídeo demonstrativo
+├── Dockerfile            # Container da API
+├── docker-compose.yml    # Orquestração
+├── requirements.txt      # Dependências Python
+├── README.md            # Este arquivo
+├── AVALIACAO.md         # Avaliação do projeto
+└── DEPLOY.md            # Guia de deploy
+```
