@@ -41,7 +41,7 @@ def prever(ticker="ITUB4.SA", janela=90):
     X_input = np.reshape(X_input, (X_input.shape[0], X_input.shape[1], 1))
 
     # Carregar modelo
-    modelo = carregar_modelo()
+    modelo = carregar_modelo(f"models/modelo_{ticker}.keras")
 
     # Fazer previsão
     y_pred = modelo.predict(X_input)
@@ -51,7 +51,7 @@ def prever(ticker="ITUB4.SA", janela=90):
 
     # Retornar DataFrame com previsões
     resultados = pd.DataFrame({
-        "Data": dados.index[janela:],
+        "Data": dados.index[janela:].astype(str),
         "Preco_Previsto": y_pred_real.flatten()
     })
 
@@ -59,4 +59,5 @@ def prever(ticker="ITUB4.SA", janela=90):
 
 if __name__ == "__main__":
     previsoes = prever("ITUB4.SA")
-    print(previsoes.head())
+    # print(previsoes.head().to_json(orient="records"))
+    print(previsoes.tail())
