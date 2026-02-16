@@ -7,7 +7,7 @@ class ParametersToTrain(BaseModel):
     ticker: str
     start: date
     end: date
-    janela: int
-    epochs: int
+    janela: int = 90
+    epochs: int = 40
     batch: int = 32
     patience: int = 4
