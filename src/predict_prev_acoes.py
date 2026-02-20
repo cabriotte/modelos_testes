@@ -4,6 +4,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
 import os
+from datetime import datetime, timedelta
 
 # Função para criar sequências
 def criar_sequencias(dados, janela=90):
@@ -29,7 +30,9 @@ def carregar_modelo(modelo_path_keras="models/modelo_lstm.keras",
 
 def prever(ticker="ITUB4.SA", janela=90):
     # Coleta de dados recentes
-    dados = yf.download(ticker, start="2025-01-01", end="2025-12-31")
+    today = datetime.now()
+    init_date = today - timedelta(days=365)
+    dados = yf.download(ticker, start=init_date.strftime("%Y-%m-%d"), end=today.strftime("%Y-%m-%d"))
     precos = dados[['Close']].values
 
     # Normalização
@@ -50,8 +53,9 @@ def prever(ticker="ITUB4.SA", janela=90):
     y_pred_real = scaler.inverse_transform(y_pred)
 
     # Retornar DataFrame com previsões
+    new_dates = [(dados.index[-1] + timedelta(days=i)).strftime("%Y-%m-%d") for i in range(1, len(y_pred_real) + 1)]
     resultados = pd.DataFrame({
-        "Data": dados.index[janela:].astype(str),
+        "Data": new_dates,
         "Preco_Previsto": y_pred_real.flatten()
     })
 
