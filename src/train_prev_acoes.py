@@ -1,4 +1,5 @@
 import argparse
+from logging import info
 from uuid import uuid1
 import yfinance as yf
 import pandas as pd
@@ -27,7 +28,7 @@ def main(args) -> str:
     epocas = args.epochs
     batchsize = args.batch
 
-    print(f"Treinando modelo para {ticker} de {start_date} até {end_date}")
+    info(f"Treinando modelo para {ticker} de {start_date} até {end_date}")
 
     # 1. Coleta de dados
     dados = yf.download(ticker, start=start_date, end=end_date)
@@ -77,16 +78,16 @@ def main(args) -> str:
     rmse = np.sqrt(mean_squared_error(y_test_real, y_pred_real))
     mape = np.mean(np.abs((y_test_real - y_pred_real) / y_test_real)) * 100
     
-    print(f"\n=== Métricas de Avaliação ===")
-    print(f"MAE (Mean Absolute Error): {mae:.2f}")
-    print(f"RMSE (Root Mean Squared Error): {rmse:.2f}")
-    print(f"MAPE (Mean Absolute Percentage Error): {mape:.2f}%")
+    info(f"\n=== Métricas de Avaliação ===")
+    info(f"MAE (Mean Absolute Error): {mae:.2f}")
+    info(f"RMSE (Root Mean Squared Error): {rmse:.2f}")
+    info(f"MAPE (Mean Absolute Percentage Error): {mape:.2f}%")
 
     # 8. Salvar modelo
     os.makedirs("models", exist_ok=True)
     file_name = f"models/modelo_{ticker}_{uuid1()}.keras"
     modelo.save(file_name)
-    print(f"\nModelo salvo em {file_name}")
+    info(f"\nModelo salvo em {file_name}")
     return file_name
 
 if __name__ == "__main__":
