@@ -119,3 +119,19 @@ Exemplo:
 1. Treinar modelo:
    ```bash
    python src/train_model.py --ticker ITUB4.SA --start 2024-01-01 --end 2025-12-31 --janela 90 --epochs 40 --batch 32
+
+## 📌 API
+
+### Health
+GET **/health** endpoint usado para saber se aplicação esta online e funcionando
+
+
+### Model
+POST **/model/train** endpoint usado para criar um modelo.
+
+GET **/model/list** lista os modelos disponiveis
+
+DELETE **/model/{id}** inativa um modelo
+
+### Predict
+POST **/predict** Endpoint de exibe a predição do modelo
