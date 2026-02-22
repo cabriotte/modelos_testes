@@ -1,0 +1,18 @@
+# Exported from Render on 2026-02-22T21:44:57Z
+version: "1"
+services:
+- type: web
+  name: modelos_testes
+  runtime: python
+  repo: https://github.com/cabriotte/modelos_testes
+  plan: free
+  envVars:
+  - key: PORT
+    sync: false
+  - key: PYTHON_VERSION
+    sync: false
+  region: oregon
+  buildCommand: pip install -r requirements.txt
+  startCommand: uvicorn api.app:app --host 0.0.0.0 --port 8000
+  healthCheckPath: /health
+  autoDeployTrigger: commit
