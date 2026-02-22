@@ -28,7 +28,7 @@ def carregar_modelo(modelo_path_keras="models/modelo_lstm.keras",
     else:
         raise FileNotFoundError("Nenhum modelo encontrado em 'models/'.")
 
-def prever(ticker="ITUB4.SA", janela=90):
+def prever(ticker: str, model_name: str, janela=90):
     # Coleta de dados recentes
     today = datetime.now()
     init_date = today - timedelta(days=365)
@@ -44,7 +44,7 @@ def prever(ticker="ITUB4.SA", janela=90):
     X_input = np.reshape(X_input, (X_input.shape[0], X_input.shape[1], 1))
 
     # Carregar modelo
-    modelo = carregar_modelo(f"models/modelo_{ticker}.keras")
+    modelo = carregar_modelo(model_name)
 
     # Fazer previsão
     y_pred = modelo.predict(X_input)

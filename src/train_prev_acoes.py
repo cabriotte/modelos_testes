@@ -1,4 +1,5 @@
 import argparse
+from uuid import uuid1
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -17,9 +18,9 @@ def criar_sequencias(dados, janela=90):
         y.append(dados[i, 0])
     return np.array(X), np.array(y)
 
-def main(args):
+def main(args) -> str:
     # parâmetros vindos da linha de comando ou API
-    ticker = args.ticker
+    ticker = args.ticker.upper()
     start_date = args.start
     end_date = args.end
     janela_dias = args.janela
@@ -83,8 +84,10 @@ def main(args):
 
     # 8. Salvar modelo
     os.makedirs("models", exist_ok=True)
-    modelo.save(f"models/modelo_{ticker}.keras")
-    print(f"\nModelo salvo em models/modelo_{ticker}.keras")
+    file_name = f"models/modelo_{ticker}_{uuid1()}.keras"
+    modelo.save(file_name)
+    print(f"\nModelo salvo em {file_name}")
+    return file_name
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Treinar modelo LSTM para previsão de preços")
