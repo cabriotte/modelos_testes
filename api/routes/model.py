@@ -1,6 +1,9 @@
 from datetime import datetime
+from logging import exception
 
 from fastapi import HTTPException, APIRouter, status
+from playhouse.shortcuts import model_to_dict
+from fastapi.responses import JSONResponse
 
 from api.db.schemas.models_available import ModelsAvailable
 from api.schemas.parameters_to_train import ModelData, ParametersToTrain
@@ -8,12 +11,16 @@ from src.train_prev_acoes import main
 
 router = APIRouter(prefix="/model", tags=["Model"])
 
-@router.post(path="/train")
+@router.post(
+    path="/train",
+    status_code=status.HTTP_201_CREATED,
+    response_model=ModelData
+)
 async def train_model(data: ParametersToTrain):
     """Forneça o nome da ação e as data que deseja usar como treinamento"""
     try:
         file_name = main(data)
-        ModelsAvailable(
+        model_available = ModelsAvailable(
             ticker=data.ticker,
             created_at=datetime.now(),
             time_series_used="{} á {}".format(data.start, data.end),
@@ -22,9 +29,11 @@ async def train_model(data: ParametersToTrain):
             batch=data.batch,
             patience=data.patience,
             filename=file_name
-        ).save()
-        return dict(ticker=data.ticker, message="Modelo treinado com sucesso")
-    except ValueError:
+        )
+        model_available.save()
+        return model_to_dict(model_available)
+    except ValueError as e:
+        exception(e)
         raise HTTPException(status_code=400, detail="Erro ao treinar o modelo")
 
 @router.get(path="/list")
