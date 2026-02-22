@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.routes import health, model, predict, main
+from api.routes import health, model, predict, main, duration_stats
 
 import uvicorn
 
@@ -10,7 +10,8 @@ router = [
     health.router,
     model.router,
     predict.router,
-    main.router
+    main.router,
+    duration_stats.router,
 ]
 
 for route in router:
