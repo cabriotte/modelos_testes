@@ -1,8 +1,13 @@
 from fastapi import FastAPI
+import uvicorn
+import mlflow
+
 from api.routes import health, model, predict, main, duration_stats
 
-import uvicorn
-
+mlflow.set_tracking_uri("sqlite:///mlflow.db")
+mlflow.set_experiment("MLflow yfinance API")
+mlflow.sklearn.autolog()
+mlflow.tensorflow.autolog()
 
 app = FastAPI(title="API Pred yfinance")
 

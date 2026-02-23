@@ -1,0 +1,30 @@
+artifact_path: file:C:/Users/Andre Rafael/Documents/modelos_testes/mlruns/1/models/m-572297e27f5e4c009f0e6d641df6c1a3/artifacts
+flavors:
+  python_function:
+    data: data
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.tensorflow
+    python_version: 3.13.5
+  tensorflow:
+    code: null
+    data: data
+    keras_version: 2.20.0
+    model_type: keras
+    save_format: tf
+is_signature_from_type_hint: false
+mlflow_version: 3.10.0
+model_id: m-572297e27f5e4c009f0e6d641df6c1a3
+model_size_bytes: 404041
+model_uuid: m-572297e27f5e4c009f0e6d641df6c1a3
+prompts: null
+run_id: 86810acc5fd7455fbd2f0ca125ef9ef2
+signature:
+  inputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1, 90,
+    1]}}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float32", "shape": [-1,
+    1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-02-23 00:54:22.684312'

@@ -12,6 +12,7 @@ from tensorflow.keras.layers import LSTM, Dense, Dropout
 from tensorflow.keras.callbacks import EarlyStopping
 import os
 
+
 def criar_sequencias(dados, janela=90):
     X, y = [], []
     for i in range(janela, len(dados)):
@@ -78,10 +79,10 @@ def main(args) -> str:
     rmse = np.sqrt(mean_squared_error(y_test_real, y_pred_real))
     mape = np.mean(np.abs((y_test_real - y_pred_real) / y_test_real)) * 100
     
-    info(f"\n=== Métricas de Avaliação ===")
-    info(f"MAE (Mean Absolute Error): {mae:.2f}")
-    info(f"RMSE (Root Mean Squared Error): {rmse:.2f}")
-    info(f"MAPE (Mean Absolute Percentage Error): {mape:.2f}%")
+    print(f"\n=== Métricas de Avaliação ===")
+    print(f"MAE (Mean Absolute Error): {mae:.2f}")
+    print(f"RMSE (Root Mean Squared Error): {rmse:.2f}")
+    print(f"MAPE (Mean Absolute Percentage Error): {mape:.2f}%")
 
     # 8. Salvar modelo
     os.makedirs("models", exist_ok=True)
